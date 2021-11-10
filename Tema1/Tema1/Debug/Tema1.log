@@ -1,0 +1,4 @@
+﻿  so-cpp.cpp
+C:\Users\User\Desktop\ATM\Anul_3\Semestrul_1\PSO\Teme-PSO\Tema1\Tema1\so-cpp.cpp(95): warning C4715: 'get_value': not all control paths return a value
+C:\Users\User\Desktop\ATM\Anul_3\Semestrul_1\PSO\Teme-PSO\Tema1\Tema1\so-cpp.cpp(93): warning C4172: returning address of local variable or temporary: no_value
+  Tema1.vcxproj -> C:\Users\User\Desktop\ATM\Anul_3\Semestrul_1\PSO\Teme-PSO\Tema1\Debug\Tema1.exe
