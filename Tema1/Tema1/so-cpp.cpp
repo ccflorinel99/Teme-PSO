@@ -3,12 +3,14 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define macro_no_value ""
+
 
 int check_space(char* sir)
 {
 	char caracter;
 	memcpy(&caracter, &sir[2], sizeof(char));
-	char spatiu = ' ';
+	char spatiu = ' \0';
 	
 	if (caracter == spatiu) return 1;
 	else return 0;
@@ -89,47 +91,32 @@ char* get_value(char* sir)
 
 	if (counter == 1) // daca nu am valoare
 	{
-		char no_value[] = "";
+		char* no_value = (char*)malloc(strlen(macro_no_value) * sizeof(char));
+		strcpy(no_value, macro_no_value);
 		return no_value;
 	}
 }
 
+char* get_directory_name(char* sir) // pt cazul in care nu am spatiu intre -Inume_dir
+{
+	char* token;
+
+	char s[] = "-I";
+
+	/* get the first token */
+	token = strtok(sir, s);
+
+	return token;
+
+}
+
 void testare()
 {
-	char ex1[] = "-Dana";
-	char ex2[] = "-D ana";
-	char ex3[] = "ana=1";
-	char ex4[] = "ana";
-	char ex5[] = "-Dana";
-	char ex6[] = "-Dana=1";
+	char ex7[] = "-Inume_dir";
 
-	if (check_space(ex1) == 0) fprintf(stdout, "Nu e spatiu\n");
-	else fprintf(stdout, "E spatiu\n");
+	char* nume_var7 = get_directory_name(ex7);
+	fprintf(stdout, "Nume director: %s\n", nume_var7);
 
-	if (check_space(ex2) == 0) fprintf(stdout, "Nu e spatiu\n");
-	else fprintf(stdout, "E spatiu\n");
-
-	if (check_macro_defined(ex3) == 1) fprintf(stdout, "Macro definit\n");
-	else fprintf(stdout, "Macro nedefinit\n");
-
-	if (check_macro_defined(ex4) == 1) fprintf(stdout, "Macro definit\n");
-	else fprintf(stdout, "Macro nedefinit\n");
-
-	char* nume_var1 = NULL;
-	nume_var1 = get_macro_name_with_space_before(ex3);
-	char* nume_var2 = get_macro_name_with_space_before(ex4);
-	fprintf(stdout, "Nume variabila: %s\n", nume_var1);
-	fprintf(stdout, "Nume variabila: %s\n", nume_var2);
-
-	char* nume_var3 = get_macro_name_without_space_before(ex5);
-	char* nume_var4 = get_macro_name_without_space_before(ex6);
-	fprintf(stdout, "Nume variabila: %s\n", nume_var3);
-	fprintf(stdout, "Nume variabila: %s\n", nume_var4);
-
-	char* nume_var5 = get_value(ex5);
-	char* nume_var6 = get_value(ex6);
-	fprintf(stdout, "Valoare variabila: %s\n", nume_var5);
-	fprintf(stdout, "Valoare variabila: %s\n", nume_var6);
 
 }
 
@@ -139,18 +126,30 @@ void testare()
 int main(int argc, char* argv[])
 {
 	testare();
-	//char* denumire_macro = NULL;
-	///* argc = 7 (maxin)
-	//   argc = 4 minim*/
-	//if (argc == 1) fprintf(stdout, "No arguments. Exiting....");
-	//else
-	//{
-	//	// -D macro[=valoare]
-	//	if (check_space(argv[2]) == 1) // daca am spatiu intre -D si numele variabilei
-	//	{
-	//		denumire_macro = get_macro_name_with_space_before(argv[3]);
-	//	}
-	//	else denumire_macro = get_macro_name_without_space_before(argv[2]);
+	char* denumire_macro = NULL, * valoare_macro = NULL, * directory_name = NULL;
+	/* argc = 7 maxim
+	   argc = 4 minim*/
+	if (argc == 1) fprintf(stdout, "No arguments. Exiting....");
+	else
+	{
+		// -D macro[=valoare]
+		if (check_space(argv[2]) == 1) // daca am spatiu intre -D si numele variabilei
+		{
+			denumire_macro = get_macro_name_with_space_before(argv[3]);
+			valoare_macro = get_value(argv[3]);
+			// -I dir
+			if (check_space(argv[4])) directory_name = argv[5];
+			else directory_name = get_directory_name(argv[4]);
+		}
+		else
+		{
+			denumire_macro = get_macro_name_without_space_before(argv[2]);
+			valoare_macro = get_value(argv[2]);
+			// -I dir
+			if (check_space(argv[3])) directory_name = argv[4];
+			else directory_name = get_directory_name(argv[3]);
+		}
 
-	//}
+		
+	}
 }
