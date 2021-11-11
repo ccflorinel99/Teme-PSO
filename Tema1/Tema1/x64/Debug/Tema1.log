@@ -1,3 +1,4 @@
 ﻿  so-cpp.cpp
-C:\Users\User\Desktop\ATM\Anul_3\Semestrul_1\PSO\Teme-PSO\Tema1\Tema1\so-cpp.cpp(98): warning C4715: 'get_value': not all control paths return a value
-  Tema1.vcxproj -> C:\Users\User\Desktop\ATM\Anul_3\Semestrul_1\PSO\Teme-PSO\Tema1\x64\Debug\Tema1.exe
+C:\Users\User\Desktop\ATM\Anul_3\Semestrul_1\PSO\Teme-PSO\Tema1\Tema1\so-cpp.cpp(13,21): warning C4305: 'initializing': truncation from 'int' to 'char'
+C:\Users\User\Desktop\ATM\Anul_3\Semestrul_1\PSO\Teme-PSO\Tema1\Tema1\so-cpp.cpp(13,16): warning C4309: 'initializing': truncation of constant value
+C:\Users\User\Desktop\ATM\Anul_3\Semestrul_1\PSO\Teme-PSO\Tema1\Tema1\so-cpp.cpp(256,4): error C3861: 'getline': identifier not found
