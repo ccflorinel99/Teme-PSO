@@ -2,8 +2,9 @@ CC = cl
 L = link
 CFLAGS = /W3 /nologo
 
+all: build clean
 
-all: so-cpp.exe
+build: so-cpp.exe
 
 so-cpp.exe: so-cpp.cpp
 	$(CC) so-cpp.cpp -o $@

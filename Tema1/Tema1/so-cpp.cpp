@@ -3,8 +3,12 @@
 #include <string.h>
 #include <stdlib.h>
 #include <string>
+//#include <unistd.h> // biblioteca pt unix care ma ajuta sa verific daca un fisier exista
+#include <io.h> // biblioteca pt windows care ma ajuta sa verific daca un fisier exista
+
 
 #define no_value ""
+#define max_size 200
 
 
 int check_space(char* sir)
@@ -96,6 +100,14 @@ char* get_value(char* sir)
 		strcpy(str_no_value, no_value);
 		return str_no_value;
 	}
+}
+
+int check_existing_file(char* complete_file_name)
+{
+	if (access(complete_file_name, ENOENT) == 0) // ENOENT e folosit pt File name or path not found
+		return 0;
+	else return 1;
+	// == 0 inseamna ca expresia e adevarata, deci fisierul nu exista
 }
 
 char* get_directory_name(char* sir) // pt cazul in care nu am spatiu intre -Inume_dir
@@ -303,8 +315,6 @@ void get_all_details(char* argv[], int index, int continua, char** pereche_macro
 		get_directory(argv, index, continua, directory_name, nume_infile, nume_outfile, total_argumente_pt_argv, "-Dmacro[=valoare]");
 	}
 }
-
-#define max_size 200
 
 int check_define(char* sir)
 {
@@ -702,11 +712,27 @@ void executing(char* denumire_macro, char* valoare_macro, char* directory_name, 
 
 	if (strcmp(nume_infile, no_value)) // citesc de la stdin
 	{
-		if (strcmp(nume_outfile, no_value) == 0) // afisez la stdout
+		while (!feof(stdin))
 		{
 			fgets(buf, max_size, stdin);
 			dezlipire(buf, directory_name, nume_infile, nume_outfile, &pereche_macro_valoare, &nr_perechi, &nr_total);
 		}
+	}
+	else
+	{
+		char* filename = (char*)malloc((strlen(directory_name) + strlen(nume_infile) + 2) * sizeof(char));
+		strcpy(filename, directory_name);
+		strcpy(filename, nume_infile);
+
+		FILE* f = fopen(filename, "r");
+
+		while (!feof(f))
+		{
+			fgets(buf, max_size, f);
+			dezlipire(buf, directory_name, nume_infile, nume_outfile, &pereche_macro_valoare, &nr_perechi, &nr_total);
+		}
+
+		fclose(f);
 	}
 }
 
